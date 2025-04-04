@@ -2,6 +2,7 @@
 
 import { useWeather } from "../Context/WeatherContext";
 import DailyCard from "../components/daily/dailyCard";
+import DailyChart from "../components/daily/dailyChart";
 
 export default function Daily() {
     
@@ -10,9 +11,19 @@ export default function Daily() {
         <div className="flex flex-col w-[1250px] mx-auto ">
             <div className="text-[#373A70] my-7">
                 <span className="text-2xl font-bold ">Daily Weather </span> 
-                <span>- {location?.geocodingData?.name} {location?.geocodingData?.country}</span> 
+                <span>- {location?.geocodingData?.name} {location?.geocodingData?.country} {cityTime}</span> 
             </div>
-            <DailyCard />
+
+            <div className="flex justify-center w-full">
+                <div className="w-full max-w-[1000px]">
+                    <DailyChart />
+                </div>
+            </div >
+
+            <div className="flex justify-center items-center my-10">
+                <DailyCard />
+            </div>
+            
         </div>
     )
 }

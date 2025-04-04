@@ -1,7 +1,7 @@
 "use client";
 
 import { useWeather } from "@/app/Context/WeatherContext";
-
+import Image from "next/image";
 export default function DailyCard() {
     const { location, cityTime, weatherCodeMap } = useWeather();
     const dailyData = location?.weatherData?.daily;
@@ -25,10 +25,34 @@ export default function DailyCard() {
     
 
     return (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-4 mt-4 w-[1250px] mb-25">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-6 mt-4 w-[1050px] mb-25">
             {first7Days.time.map((timeValue, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 w-[450px] h-[150px] px-8">
-                    <div className="flex justify-between items-center">
+                <div key={index} className=" flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100 w-[470px] h-[150px] px-8">
+                    
+                    {/* weather icon container */}
+                    <div className=" flex flex-col justify-center items-center mr-10 w-[90px] ">
+                        <div className=" justify-center items-center">
+                            {weatherCodeMap[first7Days.weather_code[index]]?.icon && (
+                            <Image
+                            src={weatherCodeMap[first7Days.weather_code[index]].icon}
+                            alt={weatherCodeMap[first7Days.weather_code[index]].text}
+                            width={80}
+                            height={80}
+                            />
+                            )}
+                        </div>
+                        <div className="flex justify-center">
+                            {weatherCodeMap[first7Days.weather_code[index]]?.text && (
+                            <div className="text-center text-gray-500 text-sm ">
+                                {weatherCodeMap[first7Days.weather_code[index]].text}
+                            </div>
+                        )}
+                        </div>
+                    </div>
+
+                    {/* detail container */}
+                    <div>
+                    <div className="flex justify-between items-center w-[280px]">
                         <div className="text-center text-gray-600 mb-2">
                             {new Date(timeValue).toLocaleDateString('en-US', {
                                 weekday: 'long',
@@ -41,11 +65,12 @@ export default function DailyCard() {
                         </div>
                     </div>
 
-                    <div className="mt-2 text-sm text-gray-500 grid grid-cols-2 gap-2">
-                        <div>Weather: {weatherCodeMap[first7Days.weather_code[index]] || "Unknown"}</div>  
+                    <div className="mt-2 text-sm text-gray-500 grid grid-cols-1 gap-y-1">
+  
                         <div>Wind Speed: {first7Days.wind_speed_10m_max[index] || '--'} m/s</div>
                         <div>Wind Gusts: {first7Days.wind_gusts_10m_max[index] || '--'} m/s</div>
                         <div>Rain Chance: {first7Days.precipitation_probability_max[index] || '--'}%</div>
+                    </div>
                     </div>
                 </div>
             ))}

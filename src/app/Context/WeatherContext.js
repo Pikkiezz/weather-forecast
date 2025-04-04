@@ -1,36 +1,54 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { getAirQualityLevel } from './airQualityMap';
+
+import cloudyDayOne from '../svg/animated/cloudy-day-1.svg';
+import cloudyDayTwo from '../svg/animated/cloudy-day-2.svg';
+import cloudyDayThree from '../svg/animated/cloudy-day-3.svg';
+import cloudy from '../svg/animated/cloudy.svg';
+import day from '../svg/animated/day.svg';
+import night from '../svg/animated/night.svg';
+import rainyFour from '../svg/animated/rainy-4.svg';
+import rainyFive from '../svg/animated/rainy-5.svg';
+import rainySix from '../svg/animated/rainy-6.svg';
+import rainySeven from '../svg/animated/rainy-7.svg';
+import snowyFour from '../svg/animated/snowy-4.svg';
+import snowyFive from '../svg/animated/snowy-5.svg';
+import snowySix from '../svg/animated/snowy-6.svg';
+import thunder from '../svg/animated/thunder.svg';
+
+
 
 export const weatherCodeMap = {
-    0: "Clear sky",
-    1: "Mainly clear",
-    2: "Partly cloudy",
-    3: "Overcast",
-    45: "Foggy",
-    48: "Depositing rime fog",
-    51: "Light drizzle",
-    53: "Moderate drizzle",
-    55: "Dense drizzle",
-    56: "Light freezing drizzle",
-    57: "Dense freezing drizzle",
-    61: "Slight rain",
-    63: "Moderate rain",
-    65: "Heavy rain",
-    66: "Light freezing rain",
-    67: "Heavy freezing rain",
-    71: "Slight snow fall",
-    73: "Moderate snow fall",
-    75: "Heavy snow fall",
-    77: "Snow grains",
-    80: "Slight rain showers",
-    81: "Moderate rain showers",
-    82: "Violent rain showers",
-    85: "Slight snow showers",
-    86: "Heavy snow showers",
-    95: "Thunderstorm",
-    96: "Thunderstorm with slight hail",
-    99: "Thunderstorm with heavy hail"
+    0: {text: "Clear sky", icon: day},
+    1: {text: "Mainly clear", icon: cloudyDayOne},
+    2: {text: "Partly cloudy", icon: cloudyDayTwo},
+    3: {text: "Overcast", icon: cloudyDayThree},
+    45: {text: "Foggy", icon: cloudy},
+    48: {text: "Depositing rime fog", icon: cloudy},
+    51: {text: "Light drizzle", icon: rainyFour},
+    53: {text: "Moderate drizzle", icon: rainyFive},
+    55: {text: "Dense drizzle", icon: rainySix},
+    56: {text: "Light freezing drizzle", icon: snowyFour},
+    57: {text: "Dense freezing drizzle", icon: snowyFive},
+    61: {text: "Slight rain", icon: rainyFour},
+    63: {text: "Moderate rain", icon: rainyFive},
+    65: {text: "Heavy rain", icon: rainySeven},
+    66: {text: "Light freezing rain", icon: snowyFour},
+    67: {text: "Heavy freezing rain", icon: snowySix},
+    71: {text: "Slight snow fall", icon: snowyFour},
+    73: {text: "Moderate snow fall", icon: snowyFive},
+    75: {text: "Heavy snow fall", icon: snowySix},
+    77: {text: "Snow grains", icon: snowyFour},
+    80: {text: "Slight rain showers", icon: rainySix},
+    81: {text: "Moderate rain showers", icon: rainySeven},
+    82: {text: "Violent rain showers", icon: rainySeven},
+    85: {text: "Slight snow showers", icon: snowySix},
+    86: {text: "Heavy snow showers", icon: snowySix},
+    95: {text: "Thunderstorm", icon: thunder},
+    96: {text: "Thunderstorm with slight hail", icon: thunder},
+    99: {text: "Thunderstorm with heavy hail", icon: thunder},
 };
 
 const WeatherContext = createContext();
@@ -58,7 +76,7 @@ export function WeatherProvider({ children }) {
     }
   };
 
-  // อัพเดทเวลาทุกนาที
+  
   useEffect(() => {
     if (location?.weatherData?.timezone) {
       const timer = setInterval(() => {
@@ -84,7 +102,7 @@ export function WeatherProvider({ children }) {
       const savedLocation = localStorage.getItem('weatherData');
       if (savedLocation) {
         const data = JSON.parse(savedLocation);
-        updateLocation(data);  // ใช้ updateLocation แทน setLocation
+        updateLocation(data);  
       }
     }
   }, []);
@@ -104,7 +122,8 @@ export function WeatherProvider({ children }) {
       setLocation: updateLocation, 
       cityTime, 
       cityCurrentHour,
-      weatherCodeMap
+      weatherCodeMap,
+      getAirQualityLevel
     }}>
       {children}
     </WeatherContext.Provider>

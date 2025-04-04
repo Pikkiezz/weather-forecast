@@ -14,6 +14,13 @@ const getWeatherData = async (latitude, longitude) => {
   return data;
 };
 
+const getAirQualityData = async (latitude, longitude) => {
+  const response = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=pm10,pm2_5,carbon_monoxide,carbon_dioxide&forecast_days=7&domains=cams_global`);
+  const data = await response.json();
+  return data;
+};
+
+
 
 
 const fetchCityWeather = async (city) => {
@@ -28,9 +35,11 @@ const fetchCityWeather = async (city) => {
     const weatherData = await getWeatherData(latitude, longitude);
     console.log({geocodingData, weatherData});
     
-    return {geocodingData, weatherData};
-
+    const airQualityData = await getAirQualityData(latitude, longitude);
+    console.log({airQualityData});
     
+    return {geocodingData, weatherData, airQualityData};
+ 
   }
 
   catch(error) {

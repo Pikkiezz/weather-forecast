@@ -11,9 +11,9 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 
 export default function HourlyChart() {
     const { location } = useWeather();
-    const hourlyData = location?.weatherData?.hourly;   
+    const dailyData = location?.weatherData?.daily;   
 
-    if (!hourlyData?.time) {
+    if (!dailyData?.time) {
         return <div>Loading...</div>;
     }
 
@@ -32,11 +32,11 @@ export default function HourlyChart() {
                 width: 3
             },
             xaxis: {
-                categories: hourlyData.time.slice(0, 24).map(time => 
-                    new Date(time).toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
+                categories: dailyData.time.slice(0, 7).map(time => 
+                    new Date(time).toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
                         timeZone: location.weatherData.timezone
                     })
                 ),
@@ -55,7 +55,7 @@ export default function HourlyChart() {
                 }
             },
             title: {
-                text: '24-Hour Temperature Forecast',
+                text: '7-Days Temperature Forecast',
                 align: 'left',
                 style: {
                     fontSize: '16px'
@@ -75,7 +75,7 @@ export default function HourlyChart() {
         },
         series: [{
             name: 'Temperature',
-            data: hourlyData.temperature_2m.slice(0, 24)
+            data: dailyData.temperature_2m_max.slice(0, 7)
         }]
     };
 

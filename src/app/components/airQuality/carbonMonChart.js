@@ -9,11 +9,11 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     loading: () => <div>Loading Chart...</div>
 });
 
-export default function HourlyChart() {
+export default function carbonMonChart() {
     const { location } = useWeather();
-    const hourlyData = location?.weatherData?.hourly;   
+    const airQualityData = location?.airQualityData?.hourly;   
 
-    if (!hourlyData?.time) {
+    if (!airQualityData?.time) {
         return <div>Loading...</div>;
     }
 
@@ -32,7 +32,7 @@ export default function HourlyChart() {
                 width: 3
             },
             xaxis: {
-                categories: hourlyData.time.slice(0, 24).map(time => 
+                categories: airQualityData.time.slice(0, 24).map(time => 
                     new Date(time).toLocaleTimeString('en-US', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -48,14 +48,14 @@ export default function HourlyChart() {
             },
             yaxis: {
                 title: {
-                    text: 'Temperature (°C)'
+                    text: 'Carbon Monoxide (mg/m³)'
                 },
                 labels: {
-                    formatter: (value) => `${Math.round(value)}°C`
+                    formatter: (value) => `${Math.round(value)} mg/m³`
                 }
             },
             title: {
-                text: '24-Hour Temperature Forecast',
+                text: '24-Hour Carbon Monoxide Forecast',
                 align: 'left',
                 style: {
                     fontSize: '16px'
@@ -74,8 +74,8 @@ export default function HourlyChart() {
             }
         },
         series: [{
-            name: 'Temperature',
-            data: hourlyData.temperature_2m.slice(0, 24)
+            name: 'Carbon Monoxide',
+            data: airQualityData.carbon_monoxide.slice(0, 24)
         }]
     };
 
