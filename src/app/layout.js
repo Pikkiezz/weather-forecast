@@ -46,7 +46,7 @@ function LayoutContent({ children }) {
         <SearchBar onSubmit={handleSubmit} />
       </header>
 
-      <div className="grid grid-cols-5 gap-4 items-center bg-[#373A70] rounded-xl w-[900px] mx-auto h-12">
+      <div className="grid grid-cols-4 gap-4 items-center bg-[#373A70] rounded-xl w-[900px] mx-auto h-12">
         <Link 
           href="/today" 
           className={`text-white text-sm h-full flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-blue-400/20 ${pathname === '/today' ? 'bg-blue-400/30' : ''}`}
@@ -66,13 +66,6 @@ function LayoutContent({ children }) {
           className={`text-white text-sm h-full flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-blue-400/20 ${pathname === '/daily' ? 'bg-blue-400/30' : ''}`}
         >
           DAILY
-        </Link>
-
-        <Link 
-          href="/monthly" 
-          className={`text-white text-sm h-full flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-blue-400/20 ${pathname === '/monthly' ? 'bg-blue-400/30' : ''}`}
-        >
-          MONTHLY
         </Link>
 
         <Link 

@@ -55,7 +55,7 @@ export default function TodayPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 w-[1000px]">
+    <div className="container mx-auto px-4 py-8 w-[1000px] mb-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <MainWeatherCard location={location} weatherData={weatherData} cityTime={cityTime} />
         
