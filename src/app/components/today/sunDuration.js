@@ -5,6 +5,31 @@ import Image from "next/image";
 
 export default function SunDuration() {
   const { location } = useWeather();
+  if (!location) {
+    return (
+      <div className="flex w-full bg-white rounded-xl h-[100px] shadow-lg overflow-hidden">
+      <div className="flex w-1/2 justify-center items-center ">
+        <Image src={day} alt="day" width={100} height={100} />
+        <div className="flex flex-col w-1/2 justify-center items-center pr-2">
+          <p className="text-xl font-bold text-[#373A70]">loading...</p>
+          <p className="text-md font-light text-[#373A70]">
+            loading...
+          </p>
+        </div>
+      </div>
+
+      <div className="flex w-1/2 justify-center items-center bg-[#373A70]">
+        <Image src={night} alt="night" width={100} height={100} />
+        <div className="flex flex-col w-1/2 justify-center items-center pr-2">
+          <p className="text-xl font-bold text-white">Sunset</p>
+          <p className="text-md font-light text-white">
+            loading...
+          </p>
+        </div>
+      </div>
+    </div>
+    )
+  }
   return (
     <div className="flex w-full bg-white rounded-xl h-[100px] shadow-lg overflow-hidden">
       <div className="flex w-1/2 justify-center items-center ">

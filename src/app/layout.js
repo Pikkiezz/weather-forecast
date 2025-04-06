@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 function LayoutContent({ children }) {
   const pathname = usePathname();
   const [clicked, setClicked] = useState(false);
-  const { setLocation } = useWeather();
+  const { setLocation, userLocation } = useWeather();
 
   const handleSubmit = async (city) => {
     const result = await fetchCityWeather(city);

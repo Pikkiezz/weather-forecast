@@ -23,6 +23,7 @@ const getAirQualityData = async (latitude, longitude) => {
 
 
 
+
 const fetchCityWeather = async (city) => {
   try {
     const geocodingData = await getGeocoding(city);

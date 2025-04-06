@@ -57,26 +57,61 @@ export function WeatherProvider({ children }) {
   const [location, setLocation] = useState(null);
   const [cityTime, setCityTime] = useState(null);
   const [cityCurrentHour, setCityCurrentHour] = useState(null);
+  const [userIp, setUserIp] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
 
   const updateLocation = (data) => {
     setLocation(data);
+    localStorage.setItem('lastSearch', JSON.stringify(data));
 
     if (data?.weatherData?.timezone) {
       const localTime = new Date().toLocaleString('en-US', {
         timeZone: data.weatherData.timezone,
         hour12: false
       });
-      
-      console.log('Timezone:', data.weatherData.timezone);
-      console.log('Local Time:', localTime);
-      console.log('Current Hour:', new Date(localTime).getHours());
-      
       setCityTime(localTime);
       setCityCurrentHour(new Date(localTime).getHours());
     }
   };
 
-  
+  useEffect(() => {
+    const initializeData = async () => {
+      const lastSearch = localStorage.getItem('lastSearch');
+      
+      if (lastSearch) {
+        console.log('Using last searched location');
+        const data = JSON.parse(lastSearch);
+        updateLocation(data);
+      } else {
+        try {
+          const response = await fetch('/api/ip');
+          const data = await response.json();
+          
+          if (data.ip) {
+            setUserIp(data.ip);
+            setUserLocation({
+              city: data.city,
+              province: data.province,
+              country: data.country
+            });
+            
+            if (data.province) {
+              const weatherResponse = await fetch(`/api/weather?city=${data.province}`);
+              const weatherData = await weatherResponse.json();
+              if (weatherData) {
+                setLocation(weatherData);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching IP:', error);
+        }
+      }
+    };
+
+    initializeData();
+  }, []);
+
   useEffect(() => {
     if (location?.weatherData?.timezone) {
       const timer = setInterval(() => {
@@ -84,10 +119,6 @@ export function WeatherProvider({ children }) {
           timeZone: location.weatherData.timezone,
           hour12: false
         });
-        
-        console.log('Updated Time:', newTime);
-        console.log('Updated Hour:', new Date(newTime).getHours());
-        
         setCityTime(newTime);
         setCityCurrentHour(new Date(newTime).getHours());
       }, 60000);
@@ -95,26 +126,6 @@ export function WeatherProvider({ children }) {
       return () => clearInterval(timer);
     }
   }, [location]);
-  
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedLocation = localStorage.getItem('weatherData');
-      if (savedLocation) {
-        const data = JSON.parse(savedLocation);
-        updateLocation(data);  
-      }
-    }
-  }, []);
-
-  
-  useEffect(() => {
-    if (typeof window !== 'undefined' && location) {
-      localStorage.setItem('weatherData', JSON.stringify(location));
-    }
-  }, [location]);
-
-
 
   return (
     <WeatherContext.Provider value={{ 
@@ -123,7 +134,10 @@ export function WeatherProvider({ children }) {
       cityTime, 
       cityCurrentHour,
       weatherCodeMap,
-      getAirQualityLevel
+      getAirQualityLevel,
+      userIp,
+      setUserIp,
+      userLocation
     }}>
       {children}
     </WeatherContext.Provider>
@@ -131,5 +145,9 @@ export function WeatherProvider({ children }) {
 }
 
 export function useWeather() {
-  return useContext(WeatherContext);
+  const context = useContext(WeatherContext);
+  if (!context) {
+    throw new Error('useWeather must be used within a WeatherProvider');
+  }
+  return context;
 }
