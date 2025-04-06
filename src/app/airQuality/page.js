@@ -20,7 +20,7 @@ export default function AirQuality() {
                 <span>- {location?.geocodingData?.name} {location?.geocodingData?.country} {cityTime}</span> 
             </div>
             
-            <div className="flex justify-center items-center my-8">
+            <div className="flex justify-center items-center my-8 animate-fade-up">
                 <AirQualityCard />
             </div>
 
@@ -30,9 +30,9 @@ export default function AirQuality() {
 
             <div className="flex justify-center w-full">
                 <div className="w-full max-w-[1000px] space-y-10">
-                    <PM2_5Chart />
-                    <PM10Chart />
-                    <CarbonMonChart />
+                    <div className="animate-slide-up-delay-1"><PM2_5Chart /></div>
+                    <div className="animate-slide-up-delay-2"><PM10Chart /></div>
+                    <div className="animate-slide-up-delay-3"><CarbonMonChart /></div>
                 </div>
             </div>
 

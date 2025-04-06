@@ -13,12 +13,12 @@ export default function Hourly() {
             </div>
             
             <div className="flex justify-center w-full">
-                <div className="w-full max-w-[1000px]">
+                <div className="w-full max-w-[1000px] animate-slide-up">
                     <HourlyChart />
                 </div>
             </div>
 
-            <div className="flex justify-center items-center my-10">
+            <div className="flex justify-center items-center my-10 animate-slide-down">
                 <HourlyCard />
             </div>
         </div>

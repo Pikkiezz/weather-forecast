@@ -10,7 +10,7 @@ export default function airDescription() {
     <div className="max-w-5xl mx-auto">
       {/* ---------------PM10------------ */}
 
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full animate-slide-up-delay-1">
         <AccordionItem value="item-1" className="w-[1000px] border p-6 rounded-lg mb-6 bg-white shadow-sm hover:shadow-md transition-shadow">
           <AccordionTrigger className="text-md font-semibold text-[#373A70] py-2">
             PM10 Impact
@@ -75,7 +75,7 @@ export default function airDescription() {
 
       {/* ---------------PM2.5------------ */}
 
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full animate-slide-up-delay-2">
         <AccordionItem value="item-1" className="w-[1000px] border p-6 rounded-lg mb-6 bg-white shadow-sm hover:shadow-md transition-shadow">
           <AccordionTrigger className="text-md font-semibold text-[#373A70] py-2">
             PM2.5 Impact
@@ -138,7 +138,7 @@ export default function airDescription() {
 
       {/* ---------------Carbon Monoxide------------ */}
 
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full animate-slide-up-delay-3">
         <AccordionItem value="item-1" className="w-[1000px]  border p-6 rounded-lg mb-6 bg-white shadow-sm hover:shadow-md transition-shadow">
           <AccordionTrigger className="text-md font-semibold text-[#373A70] py-2">
             Carbon Monoxide Impact

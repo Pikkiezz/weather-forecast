@@ -56,18 +56,28 @@ export default function TodayPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 w-[1000px] mb-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <MainWeatherCard location={location} weatherData={weatherData} cityTime={cityTime} />
+      <div className="grid grid-cols-1 gap-8">
+        <div className="animate-slide-up">
+          <MainWeatherCard location={location} weatherData={weatherData} cityTime={cityTime} />
+        </div>
         
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <WeatherDetailCard weatherData={weatherData} />
+        <div className="animate-slide-right">
+          <WeatherDetailCard weatherData={weatherData} />
+        </div>
         <div className="flex flex-col gap-8">
-          <SunDuration />
-          <TodayDescription />
+          <div className="animate-slide-up">
+            <SunDuration />
+          </div>
+          <div className="animate-slide-down">
+            <TodayDescription />
+          </div>
         </div>
       </div>
-      <SevenDayCard location={location} />
+      <div className="animate-slide-down">
+        <SevenDayCard location={location} />
+      </div>
     </div>
   );
 }
