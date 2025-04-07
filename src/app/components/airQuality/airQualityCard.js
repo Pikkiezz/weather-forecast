@@ -12,7 +12,7 @@ export default function AirQualityCard() {
     }
 
     
-    console.log("Air Quality Data:", location.airQualityData.hourly);
+    
 
     
     const currentAirQuality = {

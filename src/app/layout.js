@@ -9,6 +9,8 @@ import { usePathname } from 'next/navigation';
 import React from "react";
 import { useState } from "react";
 import { WeatherProvider, useWeather } from "./Context/WeatherContext";
+import cloudyDay from "./svg/animated/cloudy-day-1.svg";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +40,9 @@ function LayoutContent({ children }) {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex justify-between items-center px-20 py-4 mb-8 w-full border-b border-gray-300">
-        <div className="flex items-center">
-          <Link href="/">
+        <div className="flex">
+          <Link href="/" className="flex items-center justify-center">
+            <Image src={cloudyDay} alt="cloudy-day" width={45} height={45} />
             <h1 className="text-xl font-semibold text-[#373A70] px-2">Weather Forecast</h1>
           </Link>
         </div>
