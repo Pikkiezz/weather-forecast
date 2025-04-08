@@ -1,4 +1,4 @@
-export const airQualityLevels = {
+const airQualityLevels = {
     
     pm10: {
         good: { range: "0-20", description: "Good level of PM10" },

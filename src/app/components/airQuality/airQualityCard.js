@@ -12,7 +12,7 @@ export default function AirQualityCard() {
     }
 
     
-    console.log("Air Quality Data:", location.airQualityData.hourly);
+    
 
     
     const currentAirQuality = {
@@ -31,8 +31,8 @@ export default function AirQualityCard() {
         <div>
             <div className="text-lg text-[#373A70] mb-8">Current Air Quality</div>
 
-            <div className="space-y-4 flex justify-center">
-                <div className="bg-white shadow-md p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4">
+            <div className="flex justify-center items-center gap-4">
+                <div className="bg-white border border-gray-100 shadow-md p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4 animate-slide-right">
                     <div className="flex flex-col justify-between h-full">
                         <div className="flex justify-center">
                             <span>PM10:</span>
@@ -45,7 +45,7 @@ export default function AirQualityCard() {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-md p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4">
+                <div className="bg-white shadow-md border border-gray-100 p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4">
                     <div className="flex flex-col justify-between h-full">
                         <div className="flex justify-center">
                             <span>PM2.5: </span>
@@ -58,7 +58,7 @@ export default function AirQualityCard() {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-md p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4">
+                <div className="bg-white shadow-md border border-gray-100 p-2 rounded-lg w-[350px] h-[100px] px-4 py-2 mx-4 animate-slide-left">
                     <div className="flex flex-col justify-between h-full">
                         <div className="flex justify-center">
                             <span>Carbon Monoxide: </span>

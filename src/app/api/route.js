@@ -2,7 +2,7 @@ const getGeocoding = async (city) => {
   const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`);
   const data = await response.json();
   const { latitude, longitude, name, country } = data.results[0]; 
-  console.log({ latitude, longitude, name, country });
+  // console.log({ latitude, longitude, name, country });
   
   return { latitude, longitude, name, country };
 };
@@ -23,6 +23,7 @@ const getAirQualityData = async (latitude, longitude) => {
 
 
 
+
 const fetchCityWeather = async (city) => {
   try {
     const geocodingData = await getGeocoding(city);
@@ -33,10 +34,10 @@ const fetchCityWeather = async (city) => {
     const {latitude, longitude} = geocodingData;
 
     const weatherData = await getWeatherData(latitude, longitude);
-    console.log({geocodingData, weatherData});
+    // console.log({geocodingData, weatherData});
     
     const airQualityData = await getAirQualityData(latitude, longitude);
-    console.log({airQualityData});
+    // console.log({airQualityData});
     
     return {geocodingData, weatherData, airQualityData};
  

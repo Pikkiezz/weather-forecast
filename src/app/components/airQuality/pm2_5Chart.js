@@ -2,11 +2,11 @@
 
 import { useWeather } from "@/app/Context/WeatherContext";
 import dynamic from 'next/dynamic';
-
+import Loading from "@/app/svg/loading";
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     ssr: false,
-    loading: () => <div>Loading Chart...</div>
+    loading: () => <div className="flex justify-center items-center h-full"><Loading /></div>
 });
 
 export default function pm2_5Chart() {
@@ -80,7 +80,7 @@ export default function pm2_5Chart() {
     };
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-lg">
             <ReactApexChart
                 options={chartData.options}
                 series={chartData.series}
