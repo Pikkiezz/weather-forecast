@@ -24,7 +24,6 @@ const geistMono = Geist_Mono({
 
 function LayoutContent({ children }) {
   const pathname = usePathname();
-  const [clicked, setClicked] = useState(false);
   const { setLocation, userLocation } = useWeather();
 
   const handleSubmit = async (city) => {
@@ -33,9 +32,7 @@ function LayoutContent({ children }) {
     setLocation(result);
   }
 
-  const handleClick = () => {
-    setClicked(!clicked);
-  }
+  
 
   return (
     <div className="flex flex-col min-h-screen">

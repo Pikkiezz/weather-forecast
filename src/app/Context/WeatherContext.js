@@ -53,6 +53,29 @@ export const weatherCodeMap = {
 
 const WeatherContext = createContext();
 
+const fetchIpData = async () => {
+  try {
+    const response = await fetch('https://api.db-ip.com/v2/free/self');
+    if (!response.ok) {
+      throw new Error('Failed to fetch IP data');
+    }
+    const data = await response.json();
+    
+    console.log('IP API Response:', data);
+    localStorage.setItem('ipAddress', JSON.stringify(data));
+    
+    return {
+      ip: data.ipAddress,
+      city: data.city,
+      province: data.stateProv,
+      country: data.countryName
+    };
+  } catch (error) {
+    console.error('Error fetching IP:', error);
+    return null;
+  }
+};
+
 export function WeatherProvider({ children }) {
   const [location, setLocation] = useState(null);
   const [cityTime, setCityTime] = useState(null);
@@ -83,28 +106,23 @@ export function WeatherProvider({ children }) {
         const data = JSON.parse(lastSearch);
         updateLocation(data);
       } else {
-        try {
-          const response = await fetch('/api/ip');
-          const data = await response.json();
+        const ipData = await fetchIpData();
+        
+        if (ipData) {
+          setUserIp(ipData.ip);
+          setUserLocation({
+            city: ipData.city,
+            province: ipData.province,
+            country: ipData.country
+          });
           
-          if (data.ip) {
-            setUserIp(data.ip);
-            setUserLocation({
-              city: data.city,
-              province: data.province,
-              country: data.country
-            });
-            
-            if (data.province) {
-              const weatherResponse = await fetch(`/api/weather?city=${data.province}`);
-              const weatherData = await weatherResponse.json();
-              if (weatherData) {
-                setLocation(weatherData);
-              }
+          if (ipData.province) {
+            const weatherResponse = await fetch(`/api/weather?city=${ipData.province}`);
+            const weatherData = await weatherResponse.json();
+            if (weatherData) {
+              setLocation(weatherData);
             }
           }
-        } catch (error) {
-          console.error('Error fetching IP:', error);
         }
       }
     };

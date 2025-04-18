@@ -2,13 +2,14 @@
 
 import { useWeather } from "@/app/Context/WeatherContext";
 import Image from "next/image";
+import Loading from "@/app/svg/loading";
 
 export default function HourlyCard() {
     const { location, cityTime, weatherCodeMap } = useWeather();
     const hourlyData = location?.weatherData?.hourly;
 
     if (!hourlyData?.time) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }
 
     
