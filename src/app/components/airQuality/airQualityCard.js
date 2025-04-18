@@ -2,13 +2,13 @@
 
 import { useWeather } from "@/app/Context/WeatherContext";
 import { getQualityLevel } from "@/app/Context/airQualityMap";
-
+import Loading from "@/app/svg/loading";
 export default function AirQualityCard() {
     const { location } = useWeather();
 
     
     if (!location?.airQualityData?.hourly) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }
 
     

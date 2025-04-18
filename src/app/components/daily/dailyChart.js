@@ -14,7 +14,7 @@ export default function HourlyChart() {
     const dailyData = location?.weatherData?.daily;   
 
     if (!dailyData?.time) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }
 
    

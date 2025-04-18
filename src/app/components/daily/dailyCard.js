@@ -2,12 +2,14 @@
 
 import { useWeather } from "@/app/Context/WeatherContext";
 import Image from "next/image";
+import Loading from "@/app/svg/loading";
+
 export default function DailyCard() {
     const { location, cityTime, weatherCodeMap } = useWeather();
     const dailyData = location?.weatherData?.daily;
 
     if (!dailyData?.time) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }   
 
     const first7Days = {

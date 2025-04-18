@@ -15,7 +15,7 @@ export default function pm10Chart() {
     const airQualityData = location?.airQualityData?.hourly;   
 
     if (!airQualityData?.time) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }
 
    

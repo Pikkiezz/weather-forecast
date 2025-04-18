@@ -62,6 +62,7 @@ const fetchIpData = async () => {
     const data = await response.json();
     
     console.log('IP API Response:', data);
+    localStorage.setItem('ipAddress', JSON.stringify(data));
     
     return {
       ip: data.ipAddress,
