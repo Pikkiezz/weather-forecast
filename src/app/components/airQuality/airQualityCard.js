@@ -17,7 +17,6 @@ export default function AirQualityCard() {
     
     const currentAirQuality = {
         time: location.airQualityData.hourly.time?.[0] || 'N/A',
-        european_aqi: location.airQualityData.hourly.european_aqi?.[0] || 'N/A',
         pm10: location.airQualityData.hourly.pm10?.[0] || 'N/A',
         pm2_5: location.airQualityData.hourly.pm2_5?.[0] || 'N/A',
         carbon_monoxide: location.airQualityData.hourly.carbon_monoxide?.[0] || 'N/A',

@@ -7,7 +7,7 @@ import fetchCityWeather from "./api/route";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import React from "react";
-import { useState } from "react";
+
 import { WeatherProvider, useWeather } from "./Context/WeatherContext";
 import cloudyDay from "./svg/animated/cloudy-day-1.svg";
 import Image from "next/image";
@@ -80,7 +80,7 @@ function LayoutContent({ children }) {
         {children}
       </div>
       
-      <div className="text-center py-4 bg-[#373A70] h-[150px]">Footer</div>
+      <div className="flex justify-center items-center text-center py-4 bg-[#373A70] h-[150px] text-white">Made by Nannapas Phakkalin</div>
     </div>
   );
 }

@@ -9,15 +9,14 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     loading: () => <div className="flex justify-center items-center h-full"><Loading /></div>
 });
 
-export default function HourlyChart() {
+export default function DailyChart() {
     const { location } = useWeather();
-    const dailyData = location?.weatherData?.daily;   
+    const dailyData = location?.weatherData?.daily;
 
     if (!dailyData?.time) {
         return <div className="flex justify-center items-center h-full"><Loading /></div>;
     }
 
-   
     const chartData = {
         options: {
             chart: {
@@ -80,9 +79,27 @@ export default function HourlyChart() {
     };
 
     return (
-        <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-md">
+        <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-md" 
+             style={{ 
+                 overscrollBehavior: 'none',
+                 WebkitOverflowScrolling: 'touch'
+             }}>
             <ReactApexChart
-                options={chartData.options}
+                options={{
+                    ...chartData.options,
+                    chart: {
+                        ...chartData.options.chart,
+                        zoom: {
+                            enabled: false
+                        },
+                        pan: {
+                            enabled: false
+                        },
+                        toolbar: {
+                            show: false
+                        }
+                    }
+                }}
                 series={chartData.series}
                 type="line"
                 height={350}

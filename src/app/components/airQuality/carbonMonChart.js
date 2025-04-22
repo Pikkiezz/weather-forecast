@@ -80,9 +80,27 @@ export default function carbonMonChart() {
     };
 
     return (
-        <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-lg">
+        <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-md" 
+             style={{ 
+                 overscrollBehavior: 'none',
+                 WebkitOverflowScrolling: 'touch'
+             }}>
             <ReactApexChart
-                options={chartData.options}
+                options={{
+                    ...chartData.options,
+                    chart: {
+                        ...chartData.options.chart,
+                        zoom: {
+                            enabled: false
+                        },
+                        pan: {
+                            enabled: false
+                        },
+                        toolbar: {
+                            show: false
+                        }
+                    }
+                }}
                 series={chartData.series}
                 type="line"
                 height={350}

@@ -79,7 +79,6 @@ const fetchIpData = async () => {
 export function WeatherProvider({ children }) {
   const [location, setLocation] = useState(null);
   const [cityTime, setCityTime] = useState(null);
-  const [cityCurrentHour, setCityCurrentHour] = useState(null);
   const [userIp, setUserIp] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -92,8 +91,9 @@ export function WeatherProvider({ children }) {
         timeZone: data.weatherData.timezone,
         hour12: false
       });
+      console.log('Local Time:', localTime);
       setCityTime(localTime);
-      setCityCurrentHour(new Date(localTime).getHours());
+      console.log('City Time:', cityTime);
     }
   };
 
@@ -114,21 +114,16 @@ export function WeatherProvider({ children }) {
             city: ipData.city,
             province: ipData.province,
             country: ipData.country
-          });
-          
-          if (ipData.province) {
-            const weatherResponse = await fetch(`/api/weather?city=${ipData.province}`);
-            const weatherData = await weatherResponse.json();
-            if (weatherData) {
-              setLocation(weatherData);
-            }
-          }
+          });    
         }
       }
     };
 
     initializeData();
   }, []);
+  
+  //--------------------------------
+  //อัพเดทเวลาทุกวินาที
 
   useEffect(() => {
     if (location?.weatherData?.timezone) {
@@ -138,8 +133,7 @@ export function WeatherProvider({ children }) {
           hour12: false
         });
         setCityTime(newTime);
-        setCityCurrentHour(new Date(newTime).getHours());
-      }, 60000);
+      }, 1000);
 
       return () => clearInterval(timer);
     }
@@ -150,7 +144,6 @@ export function WeatherProvider({ children }) {
       location, 
       setLocation: updateLocation, 
       cityTime, 
-      cityCurrentHour,
       weatherCodeMap,
       getAirQualityLevel,
       userIp,
