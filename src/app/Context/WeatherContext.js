@@ -92,7 +92,7 @@ export function WeatherProvider({ children }) {
       setIsLoading(true);
       setSearchError(null);
 
-      // Check if city exists
+      
       const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`);
       const result = await response.json();
 
@@ -115,7 +115,7 @@ export function WeatherProvider({ children }) {
       setLocation(weatherData);
       localStorage.setItem('lastSearch', JSON.stringify(weatherData));
 
-      // Update time if timezone exists
+      
       if (weatherData.weatherData?.timezone) {
         const localTime = new Date().toLocaleString('en-US', { timeZone: weatherData.weatherData.timezone });
         setCityTime(localTime);
@@ -137,18 +137,38 @@ export function WeatherProvider({ children }) {
       const lastSearch = localStorage.getItem('lastSearch');
       
       if (lastSearch) {
-        console.log('Using last searched location');
-        const data = JSON.parse(lastSearch);
-        updateLocation(data.city);
+        try {
+          const data = JSON.parse(lastSearch);
+          if (data.geocodingData?.name) {
+           
+            setLocation(data);
+            if (data.weatherData?.timezone) {
+              const localTime = new Date().toLocaleString('en-US', { timeZone: data.weatherData.timezone });
+              setCityTime(localTime);
+            }
+          } else {
+            throw new Error('Invalid lastSearch data');
+          }
+        } catch (error) {
+          console.error('Error loading lastSearch:', error);
+          localStorage.removeItem('lastSearch');
+          const ipData = await fetchIpData();
+          if (ipData) {
+            setUserLocation({
+              city: ipData.city,
+              province: ipData.province,
+              country: ipData.country
+            });
+          }
+        }
       } else {
         const ipData = await fetchIpData();
-        
         if (ipData) {
           setUserLocation({
             city: ipData.city,
             province: ipData.province,
             country: ipData.country
-          });    
+          });
         }
       }
     };
