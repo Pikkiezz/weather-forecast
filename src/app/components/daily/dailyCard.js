@@ -5,7 +5,7 @@ import Image from "next/image";
 import Loading from "@/app/svg/loading";
 
 export default function DailyCard() {
-    const { location, cityTime, weatherCodeMap } = useWeather();
+    const { location, weatherCodeMap } = useWeather();
     const dailyData = location?.weatherData?.daily;
 
     if (!dailyData?.time) {

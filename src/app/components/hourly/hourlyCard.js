@@ -5,7 +5,7 @@ import Image from "next/image";
 import Loading from "@/app/svg/loading";
 
 export default function HourlyCard() {
-    const { location, cityTime, weatherCodeMap } = useWeather();
+    const { location, weatherCodeMap } = useWeather();
     const hourlyData = location?.weatherData?.hourly;
 
     if (!hourlyData?.time) {
