@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getAirQualityLevel } from './airQualityMap';
+import fetchCityWeather from '../api/route';
 
 import cloudyDayOne from '../svg/animated/cloudy-day-1.svg';
 import cloudyDayTwo from '../svg/animated/cloudy-day-2.svg';
@@ -49,7 +50,10 @@ export const weatherCodeMap = {
     95: {text: "Thunderstorm", icon: thunder},
     96: {text: "Thunderstorm with slight hail", icon: thunder},
     99: {text: "Thunderstorm with heavy hail", icon: thunder},
+    
 };
+
+// ---------------ดึงipที่อยู่ของuser--------------------------------
 
 const WeatherContext = createContext();
 
@@ -79,23 +83,54 @@ const fetchIpData = async () => {
 export function WeatherProvider({ children }) {
   const [location, setLocation] = useState(null);
   const [cityTime, setCityTime] = useState(null);
-  const [userIp, setUserIp] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [searchError, setSearchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const updateLocation = (data) => {
-    setLocation(data);
-    localStorage.setItem('lastSearch', JSON.stringify(data));
+  const updateLocation = async (city) => {
+    try {
+      setIsLoading(true);
+      setSearchError(null);
 
-    if (data?.weatherData?.timezone) {
-      const localTime = new Date().toLocaleString('en-US', {
-        timeZone: data.weatherData.timezone,
-        hour12: false
-      });
-      console.log('Local Time:', localTime);
-      setCityTime(localTime);
-      console.log('City Time:', cityTime);
+      // Check if city exists
+      const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`);
+      const result = await response.json();
+
+      if (!result.results || result.results.length === 0) {
+        setSearchError("City not found");
+        setLocation(null);
+        localStorage.removeItem('lastSearch');
+        return;
+      }
+
+      const weatherData = await fetchCityWeather(city);
+      
+      if (!weatherData) {
+        setSearchError("Failed to fetch weather data");
+        setLocation(null);
+        localStorage.removeItem('lastSearch');
+        return;
+      }
+
+      setLocation(weatherData);
+      localStorage.setItem('lastSearch', JSON.stringify(weatherData));
+
+      // Update time if timezone exists
+      if (weatherData.weatherData?.timezone) {
+        const localTime = new Date().toLocaleString('en-US', { timeZone: weatherData.weatherData.timezone });
+        setCityTime(localTime);
+      }
+    } catch (error) {
+      console.error('Error updating location:', error);
+      setSearchError("An error occurred while fetching weather data");
+      setLocation(null);
+      localStorage.removeItem('lastSearch');
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  // ---------------ดึงข้อมูลตอนผู้ใช้เข้ามา----------------------
 
   useEffect(() => {
     const initializeData = async () => {
@@ -104,12 +139,11 @@ export function WeatherProvider({ children }) {
       if (lastSearch) {
         console.log('Using last searched location');
         const data = JSON.parse(lastSearch);
-        updateLocation(data);
+        updateLocation(data.city);
       } else {
         const ipData = await fetchIpData();
         
         if (ipData) {
-          setUserIp(ipData.ip);
           setUserLocation({
             city: ipData.city,
             province: ipData.province,
@@ -122,8 +156,7 @@ export function WeatherProvider({ children }) {
     initializeData();
   }, []);
   
-  //--------------------------------
-  //อัพเดทเวลาทุกวินาที
+  //--------------------------------อัพเดทเวลาทุกวินาที--------------------------------
 
   useEffect(() => {
     if (location?.weatherData?.timezone) {
@@ -142,13 +175,14 @@ export function WeatherProvider({ children }) {
   return (
     <WeatherContext.Provider value={{ 
       location, 
-      setLocation: updateLocation, 
       cityTime, 
+      userLocation, 
+      updateLocation,
+      searchError,
+      setSearchError,
+      isLoading,
       weatherCodeMap,
-      getAirQualityLevel,
-      userIp,
-      setUserIp,
-      userLocation
+      getAirQualityLevel
     }}>
       {children}
     </WeatherContext.Provider>
